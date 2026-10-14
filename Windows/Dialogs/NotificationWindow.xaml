@@ -1,0 +1,15 @@
+<Window x:Class="AudioRecorderTrayApp.NotificationWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Notification" Height="80" Width="350" AllowsTransparency="True" WindowStyle="None" Background="Transparent" ShowInTaskbar="False" Topmost="True" Loaded="Window_Loaded">
+  <Border Background="{DynamicResource SecondaryBackgroundColor}" CornerRadius="8" Margin="10">
+    <Border.Effect>
+      <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="Black" Opacity="0.4" />
+    </Border.Effect>
+    <Grid Margin="15,10">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Path Data="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2z M12,20c-4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8 8,3.59 8,8 -3.59,8 -8,8z M11,7h2v6h-2z M11,15h2v2h-2z" Fill="{DynamicResource PrimaryTextColor}" Width="24" Height="24" Stretch="Uniform" VerticalAlignment="Center" />
+      <TextBlock x:Name="MessageTextBlock" Grid.Column="1" Text="Это тестовое уведомление!" Foreground="{DynamicResource PrimaryTextColor}" FontSize="14" TextWrapping="Wrap" VerticalAlignment="Center" Margin="15,0,0,0" />
+    </Grid>
+  </Border>
+</Window>

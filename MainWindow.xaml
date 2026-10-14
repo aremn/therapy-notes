@@ -1,0 +1,251 @@
+<Window x:Class="AudioRecorderTrayApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AudioRecorderTrayApp"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+  xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+    xmlns:converters="clr-namespace:AudioRecorderTrayApp.Converters"
+    mc:Ignorable="d"
+    Title="Therapy Notes" Height="720" Width="1280"
+    WindowStartupLocation="CenterScreen"
+    Background="{DynamicResource AppBackground}"
+    WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResizeWithGrip">
+  <Window.Resources>
+    <ResourceDictionary>
+      <converters:HumanDurationConverter x:Key="HumanDuration"/>
+      <Style x:Key="StatusBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource AppBackground}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="12" />
+      </Style>
+      <Style x:Key="InfoCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource AppBackground}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="16" />
+      </Style>
+      <Style x:Key="SectionHeader" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+      </Style>
+      <Style x:Key="StretchyListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      </Style>
+    </ResourceDictionary>
+  </Window.Resources>
+  <Window.Style>
+    <Style TargetType="Window">
+      <Setter Property="shell:WindowChrome.WindowChrome">
+        <Setter.Value>
+          <shell:WindowChrome CaptionHeight="40"
+                    ResizeBorderThickness="8"
+                    CornerRadius="0"
+                    GlassFrameThickness="0"
+                    UseAeroCaptionButtons="False" />
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Style>
+  <Window.ContextMenu>
+    <ContextMenu>
+  <MenuItem Header="Восстановить окно" Click="RestoreWindowMenuItem_Click" />
+  <Separator />
+  <MenuItem Header="Выход" Click="ExitMenuItem_Click" />
+    </ContextMenu>
+  </Window.ContextMenu>
+  <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="0">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="320" MinWidth="280" MaxWidth="450"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,1,0">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> 
+            <RowDefinition Height="Auto"/> 
+            <RowDefinition Height="*"/>    
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="16,0,16,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,16,0,16">
+                <materialDesign:PackIcon Kind="AlphaSBox" Width="28" Height="28" VerticalAlignment="Center" Foreground="{DynamicResource AccentColorBrush}"/>
+                <TextBlock Text="Therapy Notes" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}"/>
+                <TextBlock x:Name="VersionText" 
+               Text="v0.0.0" 
+               FontSize="12" 
+               Foreground="{DynamicResource TextSecondary}"
+               VerticalAlignment="Bottom" 
+               Margin="8,0,0,4"/>
+            </StackPanel>
+            <Separator Margin="0,0,0,16" Background="{DynamicResource BorderColor}"/>
+            <TextBlock Text="Текущий клиент" Style="{StaticResource SectionHeader}"/>
+            <Border Height="8"/> 
+            <ComboBox x:Name="ClientsComboBox" 
+              SelectionChanged="ClientsComboBox_SelectionChanged" 
+              DisplayMemberPath="Name" 
+              ItemContainerStyle="{StaticResource ThemedComboBoxItemStyle}" 
+              HorizontalAlignment="Stretch" 
+              MaxDropDownHeight="300"/>
+            <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+            x:Name="AddClientButton"
+            Content="Добавить"
+            Click="AddClient_Click"
+            Style="{StaticResource SecondaryButton}"
+            MinHeight="40"
+            Margin="0,0,5,0" />
+
+            <Button Grid.Column="1"
+            x:Name="ManageClientsButton"
+            Content="Управлять"
+            Click="ManageClients_Click"
+            Style="{StaticResource SecondaryButton}"
+            MinHeight="40"
+            Margin="5,0,0,0" />
+            </Grid>
+
+            <Border x:Name="ClientInfoHeader" CornerRadius="4" Padding="12" Margin="0,8,0,0" Background="{DynamicResource AppBackground}" Visibility="Collapsed">
+                <TextBlock x:Name="CurrentClientDescription" TextWrapping="Wrap" Foreground="{DynamicResource TextSecondary}" FontSize="12"/>
+            </Border>
+            <TextBlock x:Name="NoClientText" Text="Клиент не выбран" HorizontalAlignment="Center" Margin="0,10" Foreground="{DynamicResource TextSecondary}" Visibility="Collapsed"/>
+            <TextBlock Text="Статистика" Style="{StaticResource SectionHeader}" Margin="0,24,0,8"/>
+            <Border Style="{StaticResource InfoCardStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <TextBlock Text="Всего сессий" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock x:Name="TotalSessionsText" Text="0" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                        <TextBlock Text="Общее время" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock x:Name="TotalTimeText" Text="0с" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                        <TextBlock Text="Последняя" FontSize="11" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock x:Name="LastSessionText" Text="—" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Margin="16,24,16,0">
+            <TextBlock Text="Статус записи" Style="{StaticResource SectionHeader}" Margin="0,0,0,8"/>
+            <Border x:Name="RecordingStatusBorder" Style="{StaticResource StatusBorderStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="RecordingStatusDot" CornerRadius="5" Width="10" Height="10" VerticalAlignment="Center" Margin="0,0,10,0" Background="{DynamicResource StatusReadyDotBrush}"/>
+                    <TextBlock x:Name="RecordingStatusText" Text="Загрузка модели…" VerticalAlignment="Center" Foreground="{DynamicResource StatusReadyForegroundBrush}"/>
+                </StackPanel>
+            </Border>
+            <Button x:Name="RecordButton" Click="RecordMenuItem_Click" Style="{StaticResource AccentButtonStyle}" Content="Начать транскрибацию" Margin="0,12,0,0"/>
+        </StackPanel>
+        <Grid Grid.Row="2" Margin="16,24,16,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="0,0,0,8">
+                <TextBlock Text="Недавние сессии" Style="{StaticResource SectionHeader}" VerticalAlignment="Center"/>
+                <Button Content="Календарь" 
+                        Style="{StaticResource MaterialDesignFlatButton}" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center" 
+                        Click="AllSessionsButton_Click"
+                        materialDesign:ButtonAssist.CornerRadius="6"/>
+            </Grid>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ListView x:Name="SessionsList"
+                          KeyDown="SessionsList_KeyDown"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          BorderThickness="0" Background="Transparent"
+                          ItemContainerStyle="{StaticResource SessionListViewItemStyle}">
+                    <ListView.ItemTemplate>
+                      <DataTemplate>
+                        <Border Padding="12,8" CornerRadius="{StaticResource GlobalCornerRadius}" x:Name="ItemBorder" Background="Transparent">
+                          <Grid>
+                            <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                              <TextBox Style="{StaticResource EditableTextBlockStyle}"
+                                       Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Tag="{Binding Id}"
+                                       LostFocus="TitleTextBox_LostFocus"
+                                       KeyDown="TitleTextBox_KeyDown"/>
+                              <TextBlock Text="{Binding CreatedAtLocal}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" Tag="{Binding Id}" Click="SessionItemButton_Click" Style="{StaticResource MaterialDesignIconForegroundButton}" VerticalAlignment="Center" ToolTip="Открыть отчет">
+                              <materialDesign:PackIcon Kind="ArrowRight" Foreground="{DynamicResource TextSecondary}"/>
+                            </Button>
+                          </Grid>
+                        </Border>
+                        <DataTemplate.Triggers>
+                          <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource ControlHoverBackgroundColor}"/>
+                          </Trigger>
+                          <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                              <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource PrimaryAccentColorTransparent}"/>
+                          </MultiDataTrigger>
+                        </DataTemplate.Triggers>
+                      </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Border>
+      <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40"/> 
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Transparent" MouseDown="TitleBar_MouseDown">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{StaticResource WindowControlButton}" Click="OpenAdmin_Click" ToolTip="Админ-панель" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="ShieldCrown" Width="18" Height="18"/>
+            </Button>
+            <Button Style="{StaticResource WindowControlButton}" Click="ThemeToggle_Click" ToolTip="Переключить тему" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="ThemeLightDark" Width="18" Height="18"/>
+            </Button>
+            <Button Style="{StaticResource WindowControlButton}" Click="Settings_Click" ToolTip="Настройки" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="Cog" Width="18" Height="18"/>
+            </Button>
+            <Button Click="MinimizeButton_Click" Style="{StaticResource WindowControlButton}" ToolTip="Свернуть" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="WindowMinimize" Width="14" Height="14"/>
+            </Button>
+            <Button Click="MaximizeRestoreButton_Click" Style="{StaticResource WindowControlButton}" ToolTip="Развернуть" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="WindowMaximize" Width="14" Height="14"/>
+            </Button>
+            <Button Style="{StaticResource WindowControlButton}" Click="CloseButton_Click" ToolTip="Свернуть в трей" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+              <materialDesign:PackIcon Kind="CloseThick" Width="14" Height="14"/>
+            </Button>
+          </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+          <Grid x:Name="PlaceholderView">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+              <materialDesign:PackIcon Kind="FileDocumentOutline" Width="64" Height="64" HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondary}"/>
+              <TextBlock Text="Выберите сессию" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimary}" Margin="0,16,0,4" HorizontalAlignment="Center"/>
+              <TextBlock Text="Отчет по выбранной сессии появится здесь" Foreground="{DynamicResource TextSecondary}" HorizontalAlignment="Center"/>
+            </StackPanel>
+          </Grid>
+          <Grid x:Name="ReportView" Visibility="Collapsed">
+            <ContentControl x:Name="ReportContentControl" />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

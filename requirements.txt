@@ -1,0 +1,8 @@
+google-generativeai>=0.8,<0.9
+natasha>=1.6,<2
+pymorphy3>=2,<3
+spacy>=3.7,<4
+numpy>=1.26,<3
+torch>=2.5,<3
+torchaudio>=2.5,<3
+transformers>=4.45,<5

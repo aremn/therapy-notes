@@ -1,0 +1,44 @@
+<Window x:Class="AudioRecorderTrayApp.DialogueViewerWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Просмотр диалога (локально)" Height="450" Width="700" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+  <Border Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="1" CornerRadius="12" Margin="16" ClipToBounds="True">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="44" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0" Background="{DynamicResource CardBackground}">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Border Background="Transparent" MouseDown="TitleBar_MouseDown" />
+        <Button Grid.Column="1" x:Name="CloseButton" Click="CloseButton_Click" Width="28" Height="28" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{DynamicResource WindowCloseButtonStyle}" Padding="0" ToolTip="Закрыть">
+          <materialDesign:PackIcon xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" Kind="Close" Width="16" Height="16" />
+        </Button>
+      </Grid>
+      <Grid Grid.Row="1" Margin="16">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Text="Session Id:" VerticalAlignment="Center" Margin="0,0,6,0" />
+          <TextBox x:Name="IdBox" MinWidth="260" Grid.Column="1" />
+          <CheckBox x:Name="ApplyMapCheck" Grid.Column="2" Content="Применить mapping" Margin="12,0,0,0" VerticalAlignment="Center" Checked="ApplyMapCheck_Changed" Unchecked="ApplyMapCheck_Changed" />
+          <TextBlock x:Name="MapStatus" Grid.Column="3" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="Gray" />
+        </Grid>
+        <TextBox x:Name="OutputBox" Grid.Row="1" Margin="0,8,0,8" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" />
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Content="Загрузить" Click="Load_Click" Margin="0,0,8,0" />
+          <Button Content="Открыть папку" Click="OpenFolder_Click" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

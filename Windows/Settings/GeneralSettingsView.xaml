@@ -1,0 +1,91 @@
+<UserControl x:Class="AudioRecorderTrayApp.GeneralSettingsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AudioRecorderTrayApp" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+  <StackPanel>
+    <StackPanel Margin="0,0,0,32">
+      <TextBlock Text="Общие настройки" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,8" Foreground="{DynamicResource TextPrimary}" />
+      <TextBlock Text="Основные параметры приложения" FontSize="14" Foreground="{DynamicResource TextSecondary}" />
+    </StackPanel>
+    <materialDesign:Card Margin="0,0,0,16" Padding="20" UniformCornerRadius="8">
+      <StackPanel>
+        <Grid Margin="0,0,0,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Автозапуск" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Автоматически запускать при входе в систему" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <ToggleButton Grid.Column="1" x:Name="StartupToggleButton" Style="{DynamicResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" Checked="StartupToggleButton_CheckedChanged" Unchecked="StartupToggleButton_CheckedChanged" />
+        </Grid>
+        <Separator Style="{DynamicResource SettingsRowDivider}" />
+        <Grid Margin="0,20,0,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Автозахват звонка" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Автоматически предлагать запись при обнаружении звонка" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <ToggleButton Grid.Column="1" x:Name="AutoRecordToggle" Style="{DynamicResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Center" Checked="AutoRecordToggle_Changed" Unchecked="AutoRecordToggle_Changed" />
+        </Grid>
+        <Separator Style="{DynamicResource SettingsRowDivider}" />
+        <Grid Margin="0,20,0,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Тема приложения" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Выберите цветовую схему интерфейса" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <ComboBox Grid.Column="1" x:Name="ThemeComboBox" SelectionChanged="ThemeComboBox_SelectionChanged" Style="{DynamicResource ModernComboBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="0">
+            <ComboBoxItem Content="Светлая" />
+            <ComboBoxItem Content="Темная" />
+            <ComboBoxItem Content="Системная" />
+          </ComboBox>
+        </Grid>
+        <Separator Style="{DynamicResource SettingsRowDivider}" />
+        <Grid Margin="0,20,0,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Микрофон" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Устройство ввода для записи аудио" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <ComboBox Grid.Column="1" x:Name="MicrophoneComboBox" SelectionChanged="MicrophoneComboBox_SelectionChanged" Style="{DynamicResource ModernComboBoxStyle}" VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="0" />
+        </Grid>
+        <Separator Style="{DynamicResource SettingsRowDivider}" />
+        <Grid Margin="0,20,0,20">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Громкость микрофона" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Регулировка уровня записи" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <Slider Grid.Column="1" x:Name="MicVolumeSlider" Minimum="0" Maximum="100" ValueChanged="MicVolumeSlider_ValueChanged" VerticalAlignment="Center" Margin="0,0,8,0" />
+          <TextBlock Grid.Column="2" x:Name="MicVolumeLabel" Text="100%" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" MinWidth="40" />
+        </Grid>
+        <Separator Style="{DynamicResource SettingsRowSpacer}" />
+        <Grid Margin="0,20,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <TextBlock Text="Системная громкость" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" />
+            <TextBlock Text="Уровень системного аудио" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" />
+          </StackPanel>
+          <Slider Grid.Column="1" x:Name="SystemVolumeSlider" Minimum="0" Maximum="100" ValueChanged="SystemVolumeSlider_ValueChanged" VerticalAlignment="Center" Margin="0,0,8,0" />
+          <TextBlock Grid.Column="2" x:Name="SystemVolumeLabel" Text="100%" FontWeight="Medium" Foreground="{DynamicResource TextPrimary}" VerticalAlignment="Center" MinWidth="40" />
+        </Grid>
+      </StackPanel>
+    </materialDesign:Card>
+  </StackPanel>
+</UserControl>
